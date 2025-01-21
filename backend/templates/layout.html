@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base styles */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f8f8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
+            background-color: #ffffff;
+        }
+
+        /* Section wrapper */
+        .section-wrapper {
+            margin-bottom: 20px !important;
+            padding: 10px !important;
+        }
+
+        /* Title section */
+        .title {
+            font-size: {
+                    {
+                    titleSize
+                }
+            }
+
+            px !important;
+
+            color: {
+                    {
+                    titleColor
+                }
+            }
+
+            !important;
+
+            text-align: {
+                    {
+                    titleAlignment
+                }
+            }
+
+            !important;
+            padding: 10px 0 !important;
+            font-weight: bold !important;
+        }
+
+        /* Content section */
+        .content {
+            font-size: {
+                    {
+                    contentSize
+                }
+            }
+
+            px !important;
+
+            color: {
+                    {
+                    contentColor
+                }
+            }
+
+            !important;
+
+            text-align: {
+                    {
+                    contentAlignment
+                }
+            }
+
+            !important;
+            line-height: 1.6 !important;
+            margin: 15px 0 !important;
+        }
+
+        /* Image section */
+        .image-wrapper {
+            text-align: center !important;
+            margin: 20px 0 !important;
+        }
+
+        .image {
+            max-width: 100% !important;
+            height: auto !important;
+            display: inline-block !important;
+        }
+
+        /* Footer section */
+        .footer {
+            font-size: {
+                    {
+                    footerSize
+                }
+            }
+
+            px !important;
+
+            color: {
+                    {
+                    footerColor
+                }
+            }
+
+            !important;
+
+            text-align: {
+                    {
+                    footerAlignment
+                }
+            }
+
+            !important;
+            border-top: 1px solid #dddddd !important;
+            margin-top: 20px !important;
+            padding-top: 20px !important;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 480px) {
+            .container {
+                width: 100% !important;
+                padding: 10px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {{#each sections}}
+        {{#if_eq this.type "title"}}
+        <div class="section-wrapper" data-section="title">
+            <h1 class="title">{{../title}}</h1>
+        </div>
+        {{/if_eq}}
+
+        {{#if_eq this.type "content"}}
+        <div class="section-wrapper" data-section="content">
+            <div class="content">{{{../content}}}</div>
+        </div>
+        {{/if_eq}}
+
+        {{#if_eq this.type "image"}}
+        <div class="section-wrapper" data-section="image">
+            <div class="image-wrapper">
+                {{#each ../images}}
+                <img src="{{this.url}}" alt="{{this.alt}}" class="image">
+                {{/each}}
+            </div>
+        </div>
+        {{/if_eq}}
+
+        {{#if_eq this.type "footer"}}
+        <div class="section-wrapper" data-section="footer">
+            <div class="footer">{{{../footer}}}</div>
+        </div>
+        {{/if_eq}}
+        {{/each}}
+    </div>
+</body>
+
+</html>

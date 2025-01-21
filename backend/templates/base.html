@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        /* Email client-safe styles */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .content {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dddddd;
+            font-size: 12px;
+            color: #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{title}}</h1>
+
+        {{#each images}}
+        <img src="{{this.url}}" alt="{{this.alt}}" style="margin: 10px 0;">
+        {{/each}}
+
+        <div class="content">
+            {{{content}}}
+        </div>
+
+        <div class="footer">
+            {{{footer}}}
+        </div>
+    </div>
+</body>
+
+</html>
