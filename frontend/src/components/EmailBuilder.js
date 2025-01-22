@@ -1,9 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { Editor } from "@tinymce/tinymce-react"
 import ImageUploader from "./ImageUploader"
 import PreviewPanel from "./PreviewPanel"
-import { StyleControls } from "./StyleControls"
 import { LoadingSpinner } from "./LoadingSpinner"
 import { ErrorMessage } from "./ErrorMessage"
 import axios from "axios"
@@ -65,16 +63,6 @@ function EmailBuilder() {
         fetchLayout()
     }, [])
 
-    const handleDragEnd = (result) => {
-        if (!result.destination) return
-
-        const items = Array.from(sections)
-        const [reorderedItem] = items.splice(result.source.index, 1)
-        items.splice(result.destination.index, 0, reorderedItem)
-
-        setSections(items)
-    }
-
     const handleImageUpload = useCallback(async (files) => {
         const formData = new FormData()
         formData.append("image", files[0])
@@ -93,13 +81,6 @@ function EmailBuilder() {
             setLoading((prev) => ({ ...prev, upload: false }))
         }
     }, [])
-
-    const handleStyleChange = (property, value) => {
-        setStyles((prev) => ({
-            ...prev,
-            [property]: value,
-        }))
-    }
 
     const handleSave = async () => {
         try {
@@ -167,80 +148,55 @@ function EmailBuilder() {
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold">Email Builder</h2>
 
-                <DragDropContext onDragEnd={handleDragEnd}>
-                    <Droppable droppableId="sections">
-                        {(provided) => (
-                            <div {...provided.droppableProps} ref={provided.innerRef}>
-                                {sections.map((section, index) => (
-                                    <Draggable key={section.id} draggableId={section.id} index={index}>
-                                        {(provided) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                className="bg-white p-4 mb-4 rounded-lg shadow"
-                                            >
-                                                <div className="flex justify-between items-center mb-4">
-                                                    <h3 className="font-semibold">{section.label}</h3>
-                                                    <div className="text-gray-400 cursor-move">
-                                                        <span>⋮⋮</span>
-                                                    </div>
-                                                </div>
+                {/* Render Sections without Drag-and-Drop */}
+                {sections.map((section) => (
+                    <div key={section.id} className="bg-white p-4 mb-4 rounded-lg shadow">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-semibold">{section.label}</h3>
+                        </div>
 
-                                                {section.id === "images" ? (
-                                                    <ImageUploader onUpload={handleImageUpload} loading={loading.upload} />
-                                                ) : (
-                                                    <>
-                                                        <Editor
-                                                            apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-                                                            id={section.id}
-                                                            value={template[section.id]}
-                                                            onEditorChange={handleEditorChange}
-                                                            init={{
-                                                                height: 200,
-                                                                menubar: false,
-                                                                plugins: [
-                                                                    "advlist",
-                                                                    "autolink",
-                                                                    "lists",
-                                                                    "link",
-                                                                    "image",
-                                                                    "charmap",
-                                                                    "preview",
-                                                                    "searchreplace",
-                                                                    "visualblocks",
-                                                                    "code",
-                                                                    "fullscreen",
-                                                                    "insertdatetime",
-                                                                    "media",
-                                                                    "table",
-                                                                    "code",
-                                                                    "help",
-                                                                    "wordcount",
-                                                                ],
-                                                                toolbar:
-                                                                    "undo redo | formatselect | bold italic | " +
-                                                                    "alignleft aligncenter alignright alignjustify | " +
-                                                                    "bullist numlist | removeformat | help",
-                                                                content_style:
-                                                                    'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; }',
-                                                                entity_encoding: "raw",
-                                                            }}
-                                                        />
-                                                        <div className="mt-4">
-                                                            <StyleControls section={section.id} styles={styles} onStyleChange={handleStyleChange} />
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </div>
+                        {section.id === "images" ? (
+                            <ImageUploader onUpload={handleImageUpload} loading={loading.upload} />
+                        ) : (
+                            <Editor
+                                apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
+                                id={section.id}
+                                value={template[section.id]}
+                                onEditorChange={handleEditorChange}
+                                init={{
+                                    height: 200,
+                                    menubar: false,
+                                    plugins: [
+                                        "advlist",
+                                        "autolink",
+                                        "lists",
+                                        "link",
+                                        "image",
+                                        "charmap",
+                                        "preview",
+                                        "searchreplace",
+                                        "visualblocks",
+                                        "code",
+                                        "fullscreen",
+                                        "insertdatetime",
+                                        "media",
+                                        "table",
+                                        "code",
+                                        "help",
+                                        "wordcount",
+                                    ],
+                                    toolbar:
+                                        "undo redo | formatselect | bold italic | " +
+                                        "alignleft aligncenter alignright alignjustify | " +
+                                        "bullist numlist | removeformat | help",
+                                    content_style:
+                                        'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; }',
+                                    entity_encoding: "raw",
+                                }}
+                            />
                         )}
-                    </Droppable>
-                </DragDropContext>
+                    </div>
+                ))}
 
                 <div className="flex space-x-4">
                     <button
@@ -270,4 +226,3 @@ function EmailBuilder() {
 }
 
 export default EmailBuilder
-
