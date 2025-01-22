@@ -148,7 +148,6 @@ function EmailBuilder() {
             <div className="space-y-6">
                 <h2 className="text-2xl font-bold">Email Builder</h2>
 
-                {/* Render Sections without Drag-and-Drop */}
                 {sections.map((section) => (
                     <div key={section.id} className="bg-white p-4 mb-4 rounded-lg shadow">
                         <div className="flex justify-between items-center mb-4">
@@ -209,7 +208,7 @@ function EmailBuilder() {
                     <button
                         onClick={handleDownload}
                         disabled={loading.download}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
                     >
                         {loading.download ? "Generating..." : "Download HTML"}
                     </button>
